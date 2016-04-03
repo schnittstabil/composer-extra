@@ -1,0 +1,58 @@
+{
+    "name": "schnittstabil/composer-extra",
+    "type": "library",
+    "description": "Get namespaced configuration from composer.json `extra`",
+    "license": "MIT",
+    "keywords": ["composer.json", "composer", "extra", "configuration"],
+    "authors": [
+        {
+            "name": "Michael Mayer",
+            "email": "michael@schnittstabil.de"
+        }
+    ],
+    "require": {
+        "php": ">=5.6.0",
+        "schnittstabil/get": "^1.7",
+        "zendframework/zend-stdlib": "^3.0"
+    },
+    "autoload": {
+        "psr-4": { "Schnittstabil\\ComposerExtra\\": "src" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Schnittstabil\\ComposerExtra\\": "tests" }
+    },
+    "extra": {
+        "schnittstabil/composer-extra": {
+            "unicorns": 42,
+            "composerJson": true
+        },
+        "disable presets": {
+            "presets": false,
+            "unicorns": 42,
+            "composerJson": true
+        },
+        "empty presets": {
+            "unicorns": 42,
+            "composerJson": true
+        },
+        "multiple presets": {
+            "unicorns": 42,
+            "composerJson": true
+        },
+        "override presets": {
+            "presets": [
+                "Schnittstabil\\Presets\\ExtendedPreset::get"
+            ],
+            "unicorns": 42,
+            "composerJson": true
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "require-dev": {
+        "codeclimate/php-test-reporter": "^0.3.0",
+        "phpunit/phpunit": "^5.2",
+        "satooshi/php-coveralls": "^1.0"
+    }
+}
