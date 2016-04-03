@@ -2,7 +2,10 @@
 
 namespace Schnittstabil\ComposerExtra;
 
-use Schnittstabil\Get;
+use function Schnittstabil\Get\getValue;
+use function Schnittstabil\Get\getValueOrFail;
+
+use Schnittstabil\Get\Get;
 use Zend\Stdlib\ArrayUtils;
 
 /**
@@ -28,11 +31,9 @@ class ComposerExtra
     /**
      * Create a new ComposerExtra.
      *
-     * @param string|int|mixed[] $namespace     <a href="https://github.com/schnittstabil/get" target="_blank">See `Get::value` for details</a>
+     * @param string|int|mixed[] $namespace     <a href="https://github.com/schnittstabil/get" target="_blank">See `getValue` for details</a>
      * @param array              $defaultConfig default configuration
      * @param string             $presetsPath   presets path (w/o namespace)
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct($namespace = array(), array $defaultConfig = null, $presetsPath = 'presets')
     {
@@ -46,8 +47,6 @@ class ComposerExtra
      * Get the configuration.
      *
      * @return array the configuration
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     protected function getConfig()
     {
@@ -55,11 +54,11 @@ class ComposerExtra
             return $this->config;
         }
 
-        $composerConfig = Get::value($this->namespace, $this->loadComposerJson(), []);
+        $composerConfig = getValue($this->namespace, $this->loadComposerJson(), []);
         $config = call_user_func($this->merge, $this->defaultConfig, $composerConfig);
 
         if ($this->presetsPath) {
-            $presets = $this->loadPresets(Get::value($this->presetsPath, $config, []));
+            $presets = $this->loadPresets(getValue($this->presetsPath, $config, []));
             $configs = array_reduce($presets, $this->merge, []);
             $config = call_user_func($this->merge, $configs, $config);
         }
@@ -70,22 +69,20 @@ class ComposerExtra
     /**
      * Get configuration value.
      *
-     * @param string|int|mixed[] $path    <a href="https://github.com/schnittstabil/get" target="_blank">See `Get::value` for details</a>
+     * @param string|int|mixed[] $path    <a href="https://github.com/schnittstabil/get" target="_blank">See `getValue` for details</a>
      * @param mixed              $default default value if $path is not valid
      *
      * @return mixed the value determined by `$path` or otherwise `$default`
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function get($path = array(), $default = null)
     {
-        return Get::value($path, $this->getConfig(), $default);
+        return getValue($path, $this->getConfig(), $default);
     }
 
     /**
      * Get configuration value.
      *
-     * @param string|int|mixed[] $path    <a href="https://github.com/schnittstabil/get" target="_blank">See `Get::value` for details</a>
+     * @param string|int|mixed[] $path    <a href="https://github.com/schnittstabil/get" target="_blank">See `getValueOrFail` for details</a>
      * @param mixed              $message exception message
      *
      * @throws \OutOfBoundsException if `$path` is not valid
@@ -96,6 +93,6 @@ class ComposerExtra
      */
     public function getOrFail($path = array(), $message = null)
     {
-        return Get::valueOrFail($path, $this->getConfig(), $message);
+        return getValueOrFail($path, $this->getConfig(), $message);
     }
 }
