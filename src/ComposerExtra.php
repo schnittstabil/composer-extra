@@ -88,8 +88,6 @@ class ComposerExtra
      * @throws \OutOfBoundsException if `$path` is not valid
      *
      * @return mixed the value determined by `$path`
-     *
-     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function getOrFail($path = array(), $message = null)
     {

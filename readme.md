@@ -35,33 +35,47 @@ $config->get('unicorns') //=> int(42)
 
 ## API
 
-### Schnittstabil\ComposerExtra\ComposerExtra->get($path = array(), $default = null)
+```php
+namespace Schnittstabil\ComposerExtra;
 
-Returns a configuration value.
+/**
+ * Get namespaced configuration from `composer.json`.
+ */
+class ComposerExtra
+{
+    /**
+     * Create a new ComposerExtra.
+     *
+     * @param string|int|mixed[] $namespace     See `Schnittstabil\Get\getValue` for details
+     * @param array              $defaultConfig default configuration
+     * @param string             $presetsPath   presets path (w/o namespace)
+     */
+    public function __construct($namespace = array(), array $defaultConfig = null, $presetsPath = null);
 
-#### $path
-Type: `string|int|mixed[]`
+    /**
+     * Get configuration value.
+     *
+     * @param string|int|mixed[] $path    See `Schnittstabil\Get\getValue` for details
+     * @param mixed              $default default value if $path is not valid
+     *
+     * @return mixed the value determined by `$path` or otherwise `$default`
+     */
+    public function get($path = array(), $default = null);
 
-See <a href="https://github.com/schnittstabil/get" target="_blank">`getValue`</a>  for details.
+    /**
+     * Get configuration value.
+     *
+     * @param string|int|mixed[] $path    See `Schnittstabil\Get\getValueOrFail` for details
+     * @param mixed              $message exception message
+     *
+     * @throws \OutOfBoundsException if `$path` is not valid
+     *
+     * @return mixed the value determined by `$path`
+     */
+    public function getOrFail($path = array(), $message = null);
+}
 
-#### $default
-
-Default value if `$path` is not valid.
-
-
-### Schnittstabil\ComposerExtra\ComposerExtra->getOrFail($path = array(), $message = null)
-
-Returns a configuration value. Throws `\OutOfBoundsException` if `$path` is not valid.
-
-#### $path
-Type: `string|int|mixed[]`
-
-See <a href="https://github.com/schnittstabil/get" target="_blank">`getValueOrFail`</a>  for details.
-
-
-#### $message
-
-Exception message.
+```
 
 
 ## License
