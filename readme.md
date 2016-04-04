@@ -35,28 +35,28 @@ $config->get('unicorns') //=> int(42)
 
 ## API
 
-### Schnittstabil\ComposerExtra\ComposerExtra::get($path = array(), $default = null)
+### Schnittstabil\ComposerExtra\ComposerExtra->get($path = array(), $default = null)
 
 Returns a configuration value.
 
 #### $path
 Type: `string|int|mixed[]`
 
-See <a href="https://github.com/schnittstabil/get" target="_blank">`Get::value`</a>  for details.
+See <a href="https://github.com/schnittstabil/get" target="_blank">`getValue`</a>  for details.
 
 #### $default
 
 Default value if `$path` is not valid.
 
 
-### Schnittstabil\ComposerExtra\ComposerExtra::getOrFail($path = array(), $message = null)
+### Schnittstabil\ComposerExtra\ComposerExtra->getOrFail($path = array(), $message = null)
 
 Returns a configuration value. Throws `\OutOfBoundsException` if `$path` is not valid.
 
 #### $path
 Type: `string|int|mixed[]`
 
-See <a href="https://github.com/schnittstabil/get" target="_blank">`Get::valueOrFail`</a>  for details.
+See <a href="https://github.com/schnittstabil/get" target="_blank">`getValueOrFail`</a>  for details.
 
 
 #### $message
