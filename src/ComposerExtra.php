@@ -35,7 +35,7 @@ class ComposerExtra
      * @param array              $defaultConfig default configuration
      * @param string             $presetsPath   presets path (w/o namespace)
      */
-    public function __construct($namespace = array(), array $defaultConfig = null, $presetsPath = 'presets')
+    public function __construct($namespace = array(), array $defaultConfig = null, $presetsPath = null)
     {
         $this->namespace = Get::normalizePath($namespace);
         array_unshift($this->namespace, 'extra');
@@ -57,7 +57,7 @@ class ComposerExtra
         $composerConfig = getValue($this->namespace, $this->loadComposerJson(), []);
         $config = call_user_func($this->merge, $this->defaultConfig, $composerConfig);
 
-        if ($this->presetsPath) {
+        if ($this->presetsPath !== null) {
             $presets = $this->loadPresets(getValue($this->presetsPath, $config, []));
             $configs = array_reduce($presets, $this->merge, []);
             $config = call_user_func($this->merge, $configs, $config);

@@ -4,7 +4,7 @@ namespace Schnittstabil\ComposerExtra;
 
 class ComposerExtraTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetConfig()
+    public function testGetConfigWithDisabledPresetsInComposerJson()
     {
         $sut = new ComposerExtra(
             'disable presets',
@@ -14,7 +14,8 @@ class ComposerExtraTest extends \PHPUnit_Framework_TestCase
                 ],
                 'unicorns' => 0,
                 'default' => true,
-            ]
+            ],
+            'presets'
         );
 
         $this->assertEquals(42, $sut->get('unicorns'));
@@ -27,7 +28,7 @@ class ComposerExtraTest extends \PHPUnit_Framework_TestCase
 
     public function testGetConfigWODefaults()
     {
-        $sut = new ComposerExtra('disable presets', null);
+        $sut = new ComposerExtra('disable presets', null, 'presets');
 
         $this->assertEquals(42, $sut->get('unicorns'));
         $this->assertEquals(null, $sut->get('color'));
@@ -45,7 +46,8 @@ class ComposerExtraTest extends \PHPUnit_Framework_TestCase
                 'presets' => [],
                 'unicorns' => 0,
                 'default' => true,
-            ]
+            ],
+            'presets'
         );
 
         $this->assertEquals(42, $sut->get('unicorns'));
@@ -66,7 +68,8 @@ class ComposerExtraTest extends \PHPUnit_Framework_TestCase
                 ],
                 'unicorns' => 0,
                 'default' => true,
-            ]
+            ],
+            'presets'
         );
 
         $this->assertEquals(42, $sut->get('unicorns'));
@@ -88,7 +91,8 @@ class ComposerExtraTest extends \PHPUnit_Framework_TestCase
                 ],
                 'unicorns' => 0,
                 'default' => true,
-            ]
+            ],
+            'presets'
         );
 
         $this->assertEquals(42, $sut->get('unicorns'));
