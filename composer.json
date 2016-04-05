@@ -10,16 +10,20 @@
             "email": "michael@schnittstabil.de"
         }
     ],
-    "require": {
-        "php": ">=5.6.0",
-        "schnittstabil/get": "^2.0",
-        "zendframework/zend-stdlib": "^3.0"
-    },
     "autoload": {
         "psr-4": { "Schnittstabil\\ComposerExtra\\": "src" }
     },
     "autoload-dev": {
         "psr-4": { "Schnittstabil\\ComposerExtra\\": "tests" }
+    },
+    "require": {
+        "php": ">=5.6.0",
+        "schnittstabil/get": "^2.0",
+        "zendframework/zend-stdlib": "^3.0"
+    },
+    "require-dev": {
+        "codeclimate/php-test-reporter": "^0.3.0",
+        "satooshi/php-coveralls": "^1.0"
     },
     "extra": {
         "schnittstabil/composer-extra": {
@@ -48,11 +52,8 @@
         }
     },
     "scripts": {
-        "test": "phpunit"
-    },
-    "require-dev": {
-        "codeclimate/php-test-reporter": "^0.3.0",
-        "phpunit/phpunit": "^5.2",
-        "satooshi/php-coveralls": "^1.0"
+        "test": [
+            "sugared-phpunit"
+        ]
     }
 }
