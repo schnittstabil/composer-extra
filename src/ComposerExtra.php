@@ -4,7 +4,6 @@ namespace Schnittstabil\ComposerExtra;
 
 use function Schnittstabil\Get\getValue;
 use function Schnittstabil\Get\getValueOrFail;
-
 use Schnittstabil\Get\Get;
 use Zend\Stdlib\ArrayUtils;
 
@@ -31,9 +30,13 @@ class ComposerExtra
     /**
      * Create a new ComposerExtra.
      *
-     * @param string|int|mixed[] $namespace     <a href="https://github.com/schnittstabil/get" target="_blank">See `getValue` for details</a>
+     * @see https://github.com/schnittstabil/get Documentation of `Schnittstabil\Get\getValue`.
+     *
+     * @param string|int|mixed[] $namespace     a `Schnittstabil\Get\getValue` path
      * @param array              $defaultConfig default configuration
      * @param string             $presetsPath   presets path (w/o namespace)
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct($namespace = array(), array $defaultConfig = null, $presetsPath = null)
     {
@@ -69,7 +72,9 @@ class ComposerExtra
     /**
      * Get configuration value.
      *
-     * @param string|int|mixed[] $path    <a href="https://github.com/schnittstabil/get" target="_blank">See `getValue` for details</a>
+     * @see https://github.com/schnittstabil/get Documentation of `Schnittstabil\Get\getValue`.
+     *
+     * @param string|int|mixed[] $path    a `Schnittstabil\Get\getValue` path
      * @param mixed              $default default value if $path is not valid
      *
      * @return mixed the value determined by `$path` or otherwise `$default`
@@ -82,7 +87,9 @@ class ComposerExtra
     /**
      * Get configuration value.
      *
-     * @param string|int|mixed[] $path    <a href="https://github.com/schnittstabil/get" target="_blank">See `getValueOrFail` for details</a>
+     * @see https://github.com/schnittstabil/get Documentation of `Schnittstabil\Get\getValueOrFail`.
+     *
+     * @param string|int|mixed[] $path    a `Schnittstabil\Get\getValueOrFail` path
      * @param mixed              $message exception message
      *
      * @throws \OutOfBoundsException if `$path` is not valid

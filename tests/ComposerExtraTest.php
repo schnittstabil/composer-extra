@@ -6,14 +6,13 @@ namespace Schnittstabil\ComposerExtra;
  * schnittstabil/sugared-phpunit depends on composer-extra,
  * thus we need to run tests in seperate processes with new global state
  * to gather code coverage informations of this composer-extra library,
- * and not the (global) schnittstabil/sugared-phpunit one.
+ * and not the already loaded (global) schnittstabil/sugared-phpunit one.
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
 class ComposerExtraTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testGetConfigWithDisabledPresetsInComposerJson()
     {
         $sut = new ComposerExtra(

@@ -16,6 +16,12 @@
     "autoload-dev": {
         "psr-4": { "Schnittstabil\\ComposerExtra\\": "tests" }
     },
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/schnittstabil/pdepend.git"
+        }
+    ],
     "require": {
         "php": ">=5.6.0",
         "schnittstabil/get": "^2.0",
@@ -23,7 +29,12 @@
     },
     "require-dev": {
         "codeclimate/php-test-reporter": "^0.3.0",
-        "satooshi/php-coveralls": "^1.0"
+        "fabpot/php-cs-fixer": "^1.10",
+        "halleck45/phpmetrics": "^1.8",
+        "phpmd/phpmd": "^2.3",
+        "pdepend/pdepend": "dev-fix-namespaced-consts-and-functions as 2.0",
+        "satooshi/php-coveralls": "^1.0",
+        "squizlabs/php_codesniffer": "^2.5"
     },
     "extra": {
         "schnittstabil/composer-extra": {
@@ -52,8 +63,20 @@
         }
     },
     "scripts": {
+        "clean": "rm -rf build/",
+        "doc": [
+            "sugared-sami",
+            "phpmetrics --report-html build/phpmetrics/metrics.html src/"
+        ],
+        "lint": [
+            "phpcs -s --standard=PSR1,PSR2 src/ tests/",
+            "phpmd src text cleancode,codesize,controversial,design,naming,unusedcode",
+            "php-cs-fixer fix --dry-run --diff src",
+            "php-cs-fixer fix --dry-run --diff tests"
+        ],
         "test": [
-            "sugared-phpunit"
+            "sugared-phpunit",
+            "composer lint"
         ]
     }
 }
