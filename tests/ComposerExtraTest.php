@@ -136,4 +136,27 @@ class ComposerExtraTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($sut->get('composerJson'));
         $this->assertTrue($sut->get()['composerJson']);
     }
+
+    public function testGetConfigWithoutComposerEntry()
+    {
+        $sut = new ComposerExtra(
+            uniqid(),
+            [
+                'presets' => [
+                    'Schnittstabil\ComposerExtra\Presets\DefaultPreset::get',
+                ],
+                'unicorns' => 0,
+                'default' => true,
+            ],
+            'presets'
+        );
+
+        $this->assertEquals(['Schnittstabil\ComposerExtra\Presets\DefaultPreset::get'], $sut->get('presets'));
+        $this->assertEquals(0, $sut->get('unicorns'));
+        $this->assertEquals('#000', $sut->get('color'));
+        $this->assertTrue($sut->getOrFail('default'));
+        $this->assertTrue($sut->get('defaultPreset'));
+        $this->assertFalse($sut->get('extendedPreset', false));
+        $this->assertFalse($sut->get('composerJson', false));
+    }
 }
