@@ -5,7 +5,6 @@ namespace Schnittstabil\ComposerExtra;
 use function Schnittstabil\Get\getValue;
 use function Schnittstabil\Get\getValueOrFail;
 use Schnittstabil\Get\Get;
-use Zend\Stdlib\ArrayUtils;
 
 /**
  * Get namespaced configuration from `composer.json`.
@@ -25,7 +24,7 @@ class ComposerExtra
      *
      * @var callable
      */
-    public $merge = [ArrayUtils::class, 'merge'];
+    public $merge = '\Schnittstabil\ConfigMerge\config_merge';
 
     /**
      * Create a new ComposerExtra.
