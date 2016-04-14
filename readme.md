@@ -46,16 +46,22 @@ class ComposerExtra
     /**
      * Create a new ComposerExtra.
      *
-     * @param string|int|mixed[] $namespace     See `Schnittstabil\Get\getValue` for details
-     * @param array              $defaultConfig default configuration
+     * @see https://github.com/schnittstabil/get Documentation of `Schnittstabil\Get\getValue`.
+     *
+     * @param string|int|mixed[] $namespace     a `Schnittstabil\Get\getValue` path
+     * @param mixed              $defaultConfig default configuration
      * @param string             $presetsPath   presets path (w/o namespace)
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function __construct($namespace = array(), array $defaultConfig = null, $presetsPath = null);
+    public function __construct($namespace = array(), $defaultConfig = null, $presetsPath = null);
 
     /**
      * Get configuration value.
      *
-     * @param string|int|mixed[] $path    See `Schnittstabil\Get\getValue` for details
+     * @see https://github.com/schnittstabil/get Documentation of `Schnittstabil\Get\getValue`.
+     *
+     * @param string|int|mixed[] $path    a `Schnittstabil\Get\getValue` path
      * @param mixed              $default default value if $path is not valid
      *
      * @return mixed the value determined by `$path` or otherwise `$default`
@@ -65,7 +71,9 @@ class ComposerExtra
     /**
      * Get configuration value.
      *
-     * @param string|int|mixed[] $path    See `Schnittstabil\Get\getValueOrFail` for details
+     * @see https://github.com/schnittstabil/get Documentation of `Schnittstabil\Get\getValueOrFail`.
+     *
+     * @param string|int|mixed[] $path    a `Schnittstabil\Get\getValueOrFail` path
      * @param mixed              $message exception message
      *
      * @throws \OutOfBoundsException if `$path` is not valid
@@ -74,7 +82,6 @@ class ComposerExtra
      */
     public function getOrFail($path = array(), $message = null);
 }
-
 ```
 
 

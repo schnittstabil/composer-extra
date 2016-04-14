@@ -32,23 +32,23 @@ class ComposerExtra
      * @see https://github.com/schnittstabil/get Documentation of `Schnittstabil\Get\getValue`.
      *
      * @param string|int|mixed[] $namespace     a `Schnittstabil\Get\getValue` path
-     * @param array              $defaultConfig default configuration
+     * @param mixed              $defaultConfig default configuration
      * @param string             $presetsPath   presets path (w/o namespace)
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function __construct($namespace = array(), array $defaultConfig = null, $presetsPath = null)
+    public function __construct($namespace = array(), $defaultConfig = null, $presetsPath = null)
     {
         $this->namespace = Get::normalizePath($namespace);
         array_unshift($this->namespace, 'extra');
-        $this->defaultConfig = $defaultConfig === null ? array() : $defaultConfig;
+        $this->defaultConfig = $defaultConfig === null ? new \stdClass() : $defaultConfig;
         $this->presetsPath = $presetsPath;
     }
 
     /**
      * Get the configuration.
      *
-     * @return array the configuration
+     * @return mixed the configuration
      */
     protected function getConfig()
     {
@@ -56,13 +56,22 @@ class ComposerExtra
             return $this->config;
         }
 
-        $composerConfig = getValue($this->namespace, $this->loadComposerJson(), []);
-        $config = call_user_func($this->merge, $this->defaultConfig, $composerConfig);
+        $config = $this->defaultConfig;
+        $composerConfig = getValue($this->namespace, $this->loadComposerJson());
 
-        if ($this->presetsPath !== null) {
-            $presets = $this->loadPresets(getValue($this->presetsPath, $config, []));
-            $configs = array_reduce($presets, $this->merge, []);
-            $config = call_user_func($this->merge, $configs, $config);
+        if ($composerConfig !== null) {
+            $config = call_user_func($this->merge, $config, $composerConfig);
+        }
+
+        if ($this->presetsPath === null || $config === null) {
+            return $this->config = $config;
+        }
+
+        $presets = $this->loadPresets(getValue($this->presetsPath, $config, []));
+
+        if (is_array($presets) && count($presets) > 0) {
+            $presetsConfig = array_reduce($presets, $this->merge, array_shift($presets));
+            $config = call_user_func($this->merge, $presetsConfig, $config);
         }
 
         return $this->config = $config;

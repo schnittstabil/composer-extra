@@ -2,37 +2,25 @@
 
 namespace Schnittstabil\ComposerExtra;
 
-/**
- * schnittstabil/sugared-phpunit depends on composer-extra,
- * thus we need to run tests in seperate processes with new global state
- * to gather code coverage informations of this composer-extra library,
- * and not the already loaded (global) schnittstabil/sugared-phpunit one.
- *
- * @runTestsInSeparateProcesses
- * @preserveGlobalState disabled
- */
 class ComposerExtraTest extends \PHPUnit_Framework_TestCase
 {
     public function testGetConfigWithDisabledPresetsInComposerJson()
     {
-        $sut = new ComposerExtra(
-            'disable presets',
-            [
-                'presets' => [
-                    'Schnittstabil\ComposerExtra\Presets\DefaultPreset::get',
-                ],
-                'unicorns' => 0,
-                'default' => true,
-            ],
-            'presets'
-        );
+        $defaults = new \stdClass();
+        $defaults->presets = [
+            'Schnittstabil\ComposerExtra\Presets\FirstPreset::get',
+        ];
+        $defaults->unicorns = 0;
+        $defaults->default = true;
+
+        $sut = new ComposerExtra('disable presets', $defaults, 'presets');
 
         $this->assertEquals(42, $sut->get('unicorns'));
         $this->assertEquals(null, $sut->get('color'));
         $this->assertTrue($sut->getOrFail('default'));
-        $this->assertFalse($sut->get('defaultPreset', false));
+        $this->assertFalse($sut->get('firstPreset', false));
         $this->assertTrue($sut->get('composerJson'));
-        $this->assertTrue($sut->get()['composerJson']);
+        $this->assertTrue($sut->get()->composerJson);
     }
 
     public function testGetConfigWODefaults()
@@ -42,121 +30,127 @@ class ComposerExtraTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(42, $sut->get('unicorns'));
         $this->assertEquals(null, $sut->get('color'));
         $this->assertFalse($sut->get('default', false));
-        $this->assertFalse($sut->get('defaultPreset', false));
+        $this->assertFalse($sut->get('firstPreset', false));
         $this->assertTrue($sut->get('composerJson'));
-        $this->assertTrue($sut->get()['composerJson']);
+        $this->assertTrue($sut->get()->composerJson);
     }
 
     public function testGetConfigWithEmptyPresets()
     {
-        $sut = new ComposerExtra(
-            'empty presets',
-            [
-                'presets' => [],
-                'unicorns' => 0,
-                'default' => true,
-            ],
-            'presets'
-        );
+        $defaults = new \stdClass();
+        $defaults->presets = [];
+        $defaults->unicorns = 0;
+        $defaults->default = true;
+
+        $sut = new ComposerExtra('empty presets', $defaults, 'presets');
 
         $this->assertEquals(42, $sut->get('unicorns'));
         $this->assertEquals(null, $sut->get('color'));
         $this->assertTrue($sut->getOrFail('default'));
-        $this->assertFalse($sut->get('defaultPreset', false));
+        $this->assertFalse($sut->get('firstPreset', false));
         $this->assertTrue($sut->get('composerJson'));
-        $this->assertTrue($sut->get()['composerJson']);
+        $this->assertTrue($sut->get()->composerJson);
+    }
+
+    public function testGetConfigWithNoPresetsPath()
+    {
+        $defaults = new \stdClass();
+        $defaults->presets = [
+            'Schnittstabil\ComposerExtra\Presets\FirstPreset::get',
+        ];
+        $defaults->unicorns = 0;
+        $defaults->default = true;
+
+        $sut = new ComposerExtra('schnittstabil/composer-extra', $defaults);
+
+        $this->assertEquals(42, $sut->get('unicorns'));
+        $this->assertEquals(null, $sut->get('color'));
+        $this->assertTrue($sut->getOrFail('default'));
+        $this->assertFalse($sut->get('firstPreset', false));
+        $this->assertTrue($sut->get('composerJson'));
+        $this->assertTrue($sut->get()->composerJson);
     }
 
     public function testGetConfigWithPresets()
     {
-        $sut = new ComposerExtra(
-            'schnittstabil/composer-extra',
-            [
-                'presets' => [
-                    'Schnittstabil\ComposerExtra\Presets\DefaultPreset::get',
-                ],
-                'unicorns' => 0,
-                'default' => true,
-            ],
-            'presets'
-        );
+        $defaults = new \stdClass();
+        $defaults->presets = [
+            'Schnittstabil\ComposerExtra\Presets\FirstPreset::get',
+        ];
+        $defaults->unicorns = 0;
+        $defaults->default = true;
+
+        $sut = new ComposerExtra('schnittstabil/composer-extra', $defaults, 'presets');
 
         $this->assertEquals(42, $sut->get('unicorns'));
         $this->assertEquals('#000', $sut->get('color'));
         $this->assertTrue($sut->getOrFail('default'));
-        $this->assertTrue($sut->get('defaultPreset'));
+        $this->assertTrue($sut->get('firstPreset'));
         $this->assertTrue($sut->get('composerJson'));
-        $this->assertTrue($sut->get()['composerJson']);
+        $this->assertTrue($sut->get()->composerJson);
     }
 
     public function testGetConfigWithMultiplePresets()
     {
-        $sut = new ComposerExtra(
-            'multiple presets',
-            [
-                'presets' => [
-                    'Schnittstabil\ComposerExtra\Presets\DefaultPreset::get',
-                    'Schnittstabil\ComposerExtra\Presets\ExtendedPreset::get',
-                ],
-                'unicorns' => 0,
-                'default' => true,
-            ],
-            'presets'
-        );
+        $defaults = new \stdClass();
+        $defaults->presets = [
+            'Schnittstabil\ComposerExtra\Presets\FirstPreset::get',
+            'Schnittstabil\ComposerExtra\Presets\SecondPreset::get',
+            'Schnittstabil\ComposerExtra\Presets\ThirdPreset::get',
+        ];
+        $defaults->unicorns = 0;
+        $defaults->default = true;
+
+        $sut = new ComposerExtra('multiple presets', $defaults, 'presets');
 
         $this->assertEquals(42, $sut->get('unicorns'));
         $this->assertEquals('rainbow', $sut->get('color'));
+        $this->assertEquals('ThirdPreset', $sut->get('name'));
         $this->assertTrue($sut->getOrFail('default'));
-        $this->assertTrue($sut->get('defaultPreset'));
-        $this->assertTrue($sut->get('extendedPreset'));
+        $this->assertTrue($sut->get('firstPreset'));
+        $this->assertTrue($sut->get('secondPreset'));
         $this->assertTrue($sut->get('composerJson'));
-        $this->assertTrue($sut->get()['composerJson']);
+        $this->assertTrue($sut->get()->composerJson);
     }
 
     public function testGetConfigWithOverridePresets()
     {
-        $sut = new ComposerExtra(
-            'override presets',
-            [
-                'presets' => [
-                    'Schnittstabil\ComposerExtra\Presets\DefaultPreset::get',
-                ],
-                'unicorns' => 0,
-                'default' => true,
-            ],
-            'presets'
-        );
+        $defaults = new \stdClass();
+        $defaults->presets = [
+            'Schnittstabil\ComposerExtra\Presets\FirstPreset::get',
+        ];
+        $defaults->unicorns = 0;
+        $defaults->default = true;
 
-        $this->assertEquals(['Schnittstabil\ComposerExtra\Presets\ExtendedPreset::get'], $sut->get('presets'));
+        $sut = new ComposerExtra('override presets', $defaults, 'presets');
+
+        $this->assertEquals(['Schnittstabil\ComposerExtra\Presets\SecondPreset::get'], $sut->get('presets'));
         $this->assertEquals(42, $sut->get('unicorns'));
         $this->assertEquals('rainbow', $sut->get('color'));
         $this->assertTrue($sut->getOrFail('default'));
-        $this->assertFalse($sut->get('defaultPreset', false));
-        $this->assertTrue($sut->get('extendedPreset'));
+        $this->assertFalse($sut->get('firstPreset', false));
+        $this->assertTrue($sut->get('secondPreset'));
         $this->assertTrue($sut->get('composerJson'));
-        $this->assertTrue($sut->get()['composerJson']);
+        $this->assertTrue($sut->get()->composerJson);
     }
 
     public function testGetConfigWithoutComposerEntry()
     {
-        $sut = new ComposerExtra(
-            uniqid(),
-            [
-                'presets' => [
-                    'Schnittstabil\ComposerExtra\Presets\DefaultPreset::get',
-                ],
-                'unicorns' => 0,
-                'default' => true,
-            ],
-            'presets'
-        );
+        $defaults = new \stdClass();
+        $defaults->presets = [
+            'Schnittstabil\ComposerExtra\Presets\FirstPreset::get',
+        ];
+        $defaults->unicorns = 0;
+        $defaults->default = true;
 
-        $this->assertEquals(['Schnittstabil\ComposerExtra\Presets\DefaultPreset::get'], $sut->get('presets'));
+        $sut = new ComposerExtra(uniqid(), $defaults, 'presets');
+
+        $this->assertEquals(['Schnittstabil\ComposerExtra\Presets\FirstPreset::get'], $sut->get('presets'));
         $this->assertEquals(0, $sut->get('unicorns'));
         $this->assertEquals('#000', $sut->get('color'));
         $this->assertTrue($sut->getOrFail('default'));
-        $this->assertTrue($sut->get('defaultPreset'));
-        $this->assertFalse($sut->get('extendedPreset', false));
+        $this->assertTrue($sut->get('firstPreset'));
+        $this->assertFalse($sut->get('secondPreset', false));
         $this->assertFalse($sut->get('composerJson', false));
     }
 }

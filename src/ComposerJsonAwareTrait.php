@@ -14,6 +14,6 @@ trait ComposerJsonAwareTrait
      */
     protected function loadComposerJson()
     {
-        return json_decode(file_get_contents('composer.json'), true);
+        return json_decode(file_get_contents('composer.json'));
     }
 }
