@@ -29,7 +29,7 @@ class ComposerExtra
     /**
      * Create a new ComposerExtra.
      *
-     * @see https://github.com/schnittstabil/get Documentation of `Schnittstabil\Get\getValue`.
+     * @see https://github.com/schnittstabil/get Documentation of `Schnittstabil\Get\getValue`
      *
      * @param string|int|mixed[] $namespace     a `Schnittstabil\Get\getValue` path
      * @param mixed              $defaultConfig default configuration
@@ -46,6 +46,23 @@ class ComposerExtra
     }
 
     /**
+     * Merge two configs.
+     *
+     * @param mixed $target Target config
+     * @param mixed $source Source config
+     *
+     * @return mixed The merged config
+     */
+    protected function merge($target, $source)
+    {
+        if ($source === null) {
+            return $target;
+        }
+
+        return call_user_func($this->merge, $target, $source);
+    }
+
+    /**
      * Get the configuration.
      *
      * @return mixed the configuration
@@ -56,31 +73,25 @@ class ComposerExtra
             return $this->config;
         }
 
-        $config = $this->defaultConfig;
-        $composerConfig = getValue($this->namespace, $this->loadComposerJson());
-
-        if ($composerConfig !== null) {
-            $config = call_user_func($this->merge, $config, $composerConfig);
-        }
+        $config = $this->merge(
+            $this->defaultConfig,
+            getValue($this->namespace, $this->loadComposerJson())
+        );
 
         if ($this->presetsPath === null || $config === null) {
             return $this->config = $config;
         }
 
         $presets = $this->loadPresets(getValue($this->presetsPath, $config, []));
+        $presetsConfig = array_reduce($presets, $this->merge, array_shift($presets));
 
-        if (is_array($presets) && count($presets) > 0) {
-            $presetsConfig = array_reduce($presets, $this->merge, array_shift($presets));
-            $config = call_user_func($this->merge, $presetsConfig, $config);
-        }
-
-        return $this->config = $config;
+        return $this->config = $this->merge($presetsConfig, $config);
     }
 
     /**
      * Get configuration value.
      *
-     * @see https://github.com/schnittstabil/get Documentation of `Schnittstabil\Get\getValue`.
+     * @see https://github.com/schnittstabil/get Documentation of `Schnittstabil\Get\getValue`
      *
      * @param string|int|mixed[] $path    a `Schnittstabil\Get\getValue` path
      * @param mixed              $default default value if $path is not valid
@@ -95,7 +106,7 @@ class ComposerExtra
     /**
      * Get configuration value.
      *
-     * @see https://github.com/schnittstabil/get Documentation of `Schnittstabil\Get\getValueOrFail`.
+     * @see https://github.com/schnittstabil/get Documentation of `Schnittstabil\Get\getValueOrFail`
      *
      * @param string|int|mixed[] $path    a `Schnittstabil\Get\getValueOrFail` path
      * @param mixed              $message exception message
