@@ -7,28 +7,37 @@
 
 ## Install
 
-```
+```sh
 $ composer require schnittstabil/composer-extra
 ```
 
 
-## Usage
+## Typical Usage
+
+### End User
 
 ```json
 {
-    "name": "some-vendor/some-project",
+    "name": "end-user/project",
+    "require": {
+        "you/your-awesome-library": "*"
+    },
     "extra": {
-        "vendor/project": {
+        "you/your-awesome-library": {
             "unicorns": 42
         }
     },
 }
 ```
 
+
+### Your Library
+
 ```php
 require __DIR__.'/vendor/autoload.php';
 
-$config = new Schnittstabil\ComposerExtra\ComposerExtra('vendor/project');
+# get end-user configuration
+$config = new Schnittstabil\ComposerExtra\ComposerExtra('you/your-awesome-library');
 $config->get('unicorns') //=> int(42)
 ```
 
