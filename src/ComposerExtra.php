@@ -4,6 +4,7 @@ namespace Schnittstabil\ComposerExtra;
 
 use function Schnittstabil\Get\getValue;
 use function Schnittstabil\Get\getValueOrFail;
+use function Schnittstabil\JsonDecodeFile\jsonDecodeFile;
 use Schnittstabil\Get\Get;
 
 /**
@@ -12,12 +13,12 @@ use Schnittstabil\Get\Get;
 class ComposerExtra
 {
     use PresetsAwareTrait;
-    use ComposerJsonAwareTrait;
 
     protected $config;
     protected $namespace;
     protected $defaultConfig;
     protected $presetsPath;
+    protected $composerJson;
 
     /**
      * Merge configurations.
@@ -35,6 +36,9 @@ class ComposerExtra
      * @param mixed              $defaultConfig default configuration
      * @param string             $presetsPath   presets path (w/o namespace)
      *
+     * @throws \KHerGe\File\Exception\FileException
+     * @throws \Seld\JsonLint\ParsingException
+     *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
     public function __construct($namespace = array(), $defaultConfig = null, $presetsPath = null)
@@ -43,6 +47,7 @@ class ComposerExtra
         array_unshift($this->namespace, 'extra');
         $this->defaultConfig = $defaultConfig === null ? new \stdClass() : $defaultConfig;
         $this->presetsPath = $presetsPath;
+        $this->composerJson = jsonDecodeFile('composer.json');
     }
 
     /**
@@ -75,7 +80,7 @@ class ComposerExtra
 
         $config = $this->merge(
             $this->defaultConfig,
-            getValue($this->namespace, $this->loadComposerJson())
+            getValue($this->namespace, $this->composerJson)
         );
 
         if ($this->presetsPath === null || $config === null) {
