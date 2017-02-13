@@ -20,14 +20,10 @@
         "php": ">=5.6.0",
         "schnittstabil/get": "^2.0",
         "schnittstabil/config_merge": "^2.0",
-        "schnittstabil/json-decode-file": "^1.0"
+        "schnittstabil/json-decode-file": "^2.0"
     },
     "require-dev": {
-        "phpmd/phpmd": "^2.3",
-        "squizlabs/php_codesniffer": "^2.5",
-        "phpunit/phpunit": "^5.3",
-        "friendsofphp/php-cs-fixer": "^1.0",
-        "phpmetrics/phpmetrics": "^1.10"
+        "schnittstabil/phpunit-starter": "^6.0"
     },
     "extra": {
         "schnittstabil/composer-extra": {
@@ -58,19 +54,16 @@
     "scripts": {
         "clean": "rm -rf build/",
         "doc": [
-            "sugared-sami",
+            "sugared-rim-sami",
             "phpmetrics --report-html build/phpmetrics/metrics.html src/"
         ],
         "lint": [
-            "phpcs -s --standard=PSR1,PSR2 src/ tests/",
-            "php-cs-fixer fix --dry-run --diff src",
-            "php-cs-fixer fix --dry-run --diff tests",
-            "phpmd src text cleancode,codesize,controversial,design,naming,unusedcode"
+            "sugared-rim-cs"
         ],
         "test": [
-            "phpunit",
+            "schnittstabil-phpunit-starter",
             "composer lint"
         ],
-        "travis": "phpunit"
+        "travis": "schnittstabil-phpunit-starter"
     }
 }

@@ -61,7 +61,7 @@ class ComposerExtra
      * @param mixed              $defaultConfig default configuration
      * @param string             $presetsPath   presets path (w/o namespace)
      *
-     * @throws \KHerGe\File\Exception\FileException
+     * @throws \KHerGe\File\Exception\ResourceException
      * @throws \Seld\JsonLint\ParsingException
      */
     public function __construct($namespace = array(), $defaultConfig = null, $presetsPath = null);

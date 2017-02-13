@@ -2,7 +2,7 @@
 
 namespace Schnittstabil\ComposerExtra;
 
-class ComposerExtraTest extends \PHPUnit_Framework_TestCase
+class ComposerExtraTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetConfigWithDisabledPresetsInComposerJson()
     {
