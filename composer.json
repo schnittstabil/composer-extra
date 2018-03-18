@@ -18,12 +18,12 @@
     },
     "require": {
         "php": ">=5.6.0",
-        "schnittstabil/get": "^2.0",
+        "schnittstabil/get": "^2.0 || ^3.0",
         "schnittstabil/config_merge": "^2.0",
         "schnittstabil/json-decode-file": "^2.0"
     },
     "require-dev": {
-        "schnittstabil/phpunit-starter": "^6.0"
+        "schnittstabil/phpunit-starter": "^6.0 || ^7.0"
     },
     "extra": {
         "schnittstabil/composer-extra": {
