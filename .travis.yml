@@ -5,6 +5,7 @@ php:
   - 7
   - 7.0
   - 7.1
+  - 7.2
   - hhvm
 
 sudo: false
@@ -13,7 +14,7 @@ install:
   - composer selfupdate
   - |
     if [ "$TRAVIS_PHP_VERSION" == "5.6" ]; then
-      composer require codeclimate/php-test-reporter satooshi/php-coveralls
+      composer require 'codeclimate/php-test-reporter:*' 'satooshi/php-coveralls:*'
     else
       composer install
     fi
